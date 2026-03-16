@@ -78,15 +78,15 @@ export async function runDiagnosisFromAnswers(
     try {
       const oai = getOpenAIClient();
       const imageResponse = await oai.images.generate({
-        model: "gpt-image-1",
+        model: "dall-e-3",
         prompt: diagnosis.image_prompt,
-        size: "1024x1536", // 2:3 portrait
-        quality: "medium",
+        size: "1024x1792", // 縦長 portrait（DALL-E 3 で最も 2:3 に近いサイズ）
+        quality: "standard",
+        response_format: "b64_json",
         n: 1,
       });
 
       const item = imageResponse.data?.[0];
-      // gpt-image-1 は b64_json で返す
       const b64 = item?.b64_json;
       if (b64) {
         diagnosis.image_url = `data:image/png;base64,${b64}`;
