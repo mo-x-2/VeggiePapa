@@ -227,7 +227,7 @@ export function Result({ diagnosis, onBack }: Props) {
       {/* ── Section 4: レシピ提案 ── */}
       <section id="result-s4" className="vp-story-section">
         <div style={{ width: "100%", maxWidth: 480, padding: "0 24px" }}>
-          <h2 style={{ fontSize: 18, margin: "0 0 12px" }}>
+          <h2 style={{ fontSize: 18, lineHeight: 1.7, margin: "0 0 18px", fontWeight: 500 }}>
             {recipe_title}
           </h2>
           <p style={{ fontSize: 13, lineHeight: 1.8, whiteSpace: "pre-wrap", margin: "0 0 16px" }}>
