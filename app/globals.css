@@ -10,6 +10,8 @@ body {
   padding: 0;
   height: 100%;
   overflow: hidden;
+  position: fixed;
+  width: 100%;
 }
 
 body {
@@ -17,14 +19,20 @@ body {
   font-family: var(--font-zen-kaku), "Hiragino Sans", system-ui, sans-serif;
   background: #fffaf3;
   color: #3a2b22;
+  overscroll-behavior: none;
 }
 
 .vp-root {
-  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   background: radial-gradient(circle at top, #ffe8c8 0, #fffaf3 40%, #fff 100%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .vp-header {
@@ -48,6 +56,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* カード型ページ（Question）用：中央寄せ＋余白 */
