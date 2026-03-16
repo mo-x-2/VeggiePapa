@@ -75,11 +75,10 @@ export async function generateImageFromPrompt(
 
   const oai = getOpenAIClient();
   const imageResponse = await oai.images.generate({
-    model: "dall-e-3",
+    model: "gpt-image-1",
     prompt,
-    size: "1024x1792",
-    quality: "standard",
-    response_format: "b64_json",
+    size: "1024x1536",
+    quality: "medium",
     n: 1,
   });
 
