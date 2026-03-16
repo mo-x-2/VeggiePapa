@@ -61,7 +61,8 @@ export function QuestionFlow() {
 
       setLoading(true);
       try {
-        const res = await fetch("/api/diagnose", {
+        // Step 1: テキスト診断（～10秒）
+        const diagRes = await fetch("/api/diagnose", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -72,10 +73,29 @@ export function QuestionFlow() {
           }),
         });
 
-        if (!res.ok)
+        if (!diagRes.ok)
           throw new Error("診断に失敗しました。時間をおいて再度お試しください。");
 
-        const data: DiagnosisResult = await res.json();
+        const data: DiagnosisResult = await diagRes.json();
+
+        // Step 2: 画像生成（別ルート・最大60秒）
+        if (data.image_prompt) {
+          try {
+            const imgRes = await fetch("/api/image", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ prompt: data.image_prompt }),
+            });
+            if (imgRes.ok) {
+              const { image_url } = await imgRes.json();
+              if (image_url) data.image_url = image_url;
+            }
+          } catch (imgErr) {
+            // 画像失敗でも結果は表示する
+            console.error("image fetch failed", imgErr);
+          }
+        }
+
         sessionStorage.setItem("vp_diagnosis", JSON.stringify(data));
         router.push("/result");
       } catch (e) {
