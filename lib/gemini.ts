@@ -58,7 +58,7 @@ export async function runDiagnosisFromAnswers(
 
   const genAI = getGeminiClient();
   const model = genAI.getGenerativeModel({
-    model: "gemini-2.0-flash-lite",
+    model: "gemini-3-flash-preview",
     systemInstruction: DIAGNOSIS_SYSTEM_PROMPT,
   });
 
