@@ -31,7 +31,7 @@ export function QuestionStep({
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
-    inputRef.current?.focus();
+    // モバイルでキーボードが再展開しないよう auto-focus は行わない
     setLocalValue("");
   }, [index]);
 

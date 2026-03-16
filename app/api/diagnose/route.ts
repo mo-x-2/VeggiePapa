@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { runDiagnosisFromAnswers } from "../../../lib/gemini";
 
+// Vercel Hobby: 最大60秒、Pro: 最大300秒
+export const maxDuration = 60;
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json().catch(() => ({}));
