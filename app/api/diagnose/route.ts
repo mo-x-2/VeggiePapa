@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
         question: String(item.question ?? ""),
         answer: String(item.answer ?? ""),
       }))
-      .filter((item) => item.question || item.answer);
+      .filter((item: { question: string; answer: string }) => item.question || item.answer);
 
     if (!normalized.length) {
       return NextResponse.json(
