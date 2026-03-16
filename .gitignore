@@ -1,0 +1,20 @@
+# dependencies
+node_modules/
+
+# environment variables (API keys)
+.env
+.env.local
+.env*.local
+
+# Next.js build output
+.next/
+out/
+
+# generated image logs
+logs/
+
+# OS
+.DS_Store
+
+# misc
+*.pem
