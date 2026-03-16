@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { QuestionStep } from "./QuestionStep";
 import { LoadingOverlay } from "./LoadingOverlay";
@@ -38,11 +38,15 @@ export function QuestionFlow() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const submittingRef = useRef(false); // 二重送信防止ロック
 
   const progress = (currentIndex / QUESTIONS.length) * 100;
 
   const handleAnswer = useCallback(
     async (value: string) => {
+      if (submittingRef.current) return; // 二重送信をブロック
+      submittingRef.current = true;
+
       setError(null);
       const nextAnswers = [...answers];
       nextAnswers[currentIndex] = value;
@@ -51,6 +55,7 @@ export function QuestionFlow() {
       const nextIndex = currentIndex + 1;
       if (nextIndex < QUESTIONS.length) {
         setCurrentIndex(nextIndex);
+        submittingRef.current = false;
         return;
       }
 
@@ -81,6 +86,7 @@ export function QuestionFlow() {
             : "診断に失敗しました。もう一度お試しください。"
         );
         setLoading(false);
+        submittingRef.current = false;
       }
     },
     [answers, currentIndex, router]

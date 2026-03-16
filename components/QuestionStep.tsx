@@ -39,6 +39,8 @@ export function QuestionStep({
     e.preventDefault();
     const trimmed = localValue.trim();
     if (!trimmed) return;
+    // iOS キーボードを閉じてから遷移
+    inputRef.current?.blur();
     onSubmit(trimmed);
   };
 
