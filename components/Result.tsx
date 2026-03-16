@@ -47,7 +47,6 @@ export function Result({ diagnosis, onBack }: Props) {
     vegetable_type,
     nickname,
     reason_text,
-    image_url,
     father_inner_voice,
     recipe_title,
     recipe_body,
@@ -57,7 +56,33 @@ export function Result({ diagnosis, onBack }: Props) {
   const [displayed, setDisplayed] = useState("");
   const [copied, setCopied] = useState(false);
   const [sharing, setSharing] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string | undefined>(diagnosis.image_url);
+  const [imageLoading, setImageLoading] = useState(!diagnosis.image_url && !!diagnosis.image_prompt);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  // 画像をブラウザ側から非同期取得（Safari タイムアウト回避）
+  useEffect(() => {
+    if (diagnosis.image_url || !diagnosis.image_prompt) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/image", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: diagnosis.image_prompt }),
+        });
+        if (!cancelled && res.ok) {
+          const { image_url } = await res.json();
+          if (image_url) setImageUrl(image_url);
+        }
+      } catch (e) {
+        console.error("image fetch failed", e);
+      } finally {
+        if (!cancelled) setImageLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [diagnosis.image_url, diagnosis.image_prompt]);
 
   const handleShare = async () => {
     if (!cardRef.current) return;
@@ -140,10 +165,15 @@ export function Result({ diagnosis, onBack }: Props) {
             >
               {nickname || `${vegetable_type}パパ`}
             </h2>
-            {image_url && (
+            {imageLoading && (
+              <div style={{ flexGrow: 1, minWidth: 0, aspectRatio: "2 / 3", background: "#f5f0ea", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ fontSize: 12, color: "#a08a6e" }}>生成中…</span>
+              </div>
+            )}
+            {!imageLoading && imageUrl && (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={image_url}
+                src={imageUrl}
                 alt={`${nickname} のイラスト`}
                 style={{
                   flexGrow: 1,
@@ -315,10 +345,15 @@ export function Result({ diagnosis, onBack }: Props) {
             <div style={{ width: "40%", height: 1, background: "#ddd", marginBottom: 20 }} />
 
             {/* 画像 */}
-            {image_url && (
+            {imageLoading && (
+              <div style={{ width: "60%", aspectRatio: "2 / 3", background: "#f5f0ea", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
+                <span style={{ fontSize: 11, color: "#a08a6e" }}>生成中…</span>
+              </div>
+            )}
+            {!imageLoading && imageUrl && (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={image_url}
+                src={imageUrl}
                 alt={`${nickname} のイラスト`}
                 style={{
                   width: "60%",

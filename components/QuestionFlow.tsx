@@ -78,24 +78,7 @@ export function QuestionFlow() {
 
         const data: DiagnosisResult = await diagRes.json();
 
-        // Step 2: 画像生成（別ルート・最大60秒）
-        if (data.image_prompt) {
-          try {
-            const imgRes = await fetch("/api/image", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ prompt: data.image_prompt }),
-            });
-            if (imgRes.ok) {
-              const { image_url } = await imgRes.json();
-              if (image_url) data.image_url = image_url;
-            }
-          } catch (imgErr) {
-            // 画像失敗でも結果は表示する
-            console.error("image fetch failed", imgErr);
-          }
-        }
-
+        // テキスト結果をすぐに保存してリダイレクト（画像は結果ページで非同期取得）
         sessionStorage.setItem("vp_diagnosis", JSON.stringify(data));
         router.push("/result");
       } catch (e) {
