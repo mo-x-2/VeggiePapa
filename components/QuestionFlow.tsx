@@ -9,7 +9,7 @@ import type { DiagnosisResult } from "../types/diagnosis";
 export const QUESTIONS = [
   {
     question: "あなたのお父さんの性格を一言で表すと？",
-    placeholder: "例：「頑固、優しい、マイペース、職人気質」",
+    placeholder: "例：「頑固、優しい、穏やか、無口」",
   },
   {
     question: "子どもの頃、お父さんと一緒にしたことで覚えていることは？",
@@ -17,15 +17,15 @@ export const QUESTIONS = [
   },
   {
     question: "お父さんのちょっと困ったところ、でも嫌いになれないところは？",
-    placeholder: "例：「怒りっぽいところ、感情表現が少ないところ、不器用なところ」",
+    placeholder: "例：「怒りっぽいところ、感情表現が少ないところ、だらしがないところ」",
   },
   {
     question: "お父さんの愛情を感じたエピソードは？",
     placeholder:
-      "例：「塾終わりに夜遅く迎えに来てくれた、子供の時にあげた手紙をまだ持ってる」",
+      "例：「いつも「ちゃんと食べろよ」って言ってくる、子供の時にあげた手紙をまだ持ってる」",
   },
   {
-    question: "これからも、お父さんにどんな人でいてほしい？",
+    question: "お父さんにどう過ごしてほしい？",
     placeholder: "例：「いつまでも元気でいてほしい、笑顔で過ごしてほしい」",
   },
 ] as const;

@@ -381,7 +381,7 @@ export function Result({ diagnosis, onBack }: Props) {
                 width: "100%",
               }}
             >
-              {`${nickname || `${vegetable_type}パパ`}みたいなお父さんへ。\n父の日おめでとう。\n${invite_message}`}
+              {`${nickname || `${vegetable_type}`}みたいなお父さんへ。\n父の日おめでとう。\n${invite_message}`}
             </p>
           </div>
           {/* ── /招待状カード ── */}
